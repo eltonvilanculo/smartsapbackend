@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `TaskGroup` MODIFY `duration` INTEGER NOT NULL DEFAULT 0,
+    MODIFY `state` BOOLEAN NOT NULL DEFAULT false;

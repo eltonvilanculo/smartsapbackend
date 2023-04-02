@@ -1,0 +1,9 @@
+apps:
+  - name: 'node-app'
+    script: './dist/src/server.js'
+    node_args: '-r ts-node/register -r tsconfig-paths/register'
+    kill_timeout: 10000
+    instances: max
+    exec_mode: cluster
+    env:
+      NODE_ENV: development

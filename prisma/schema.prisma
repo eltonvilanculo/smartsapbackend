@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String  @id @default(cuid())
+  email      String  @unique
+  name       String
+  photo      String?
+  googleId   String? @unique
+  facebookId String? @unique
+
+  TasKGroup TaskGroup[]
+  task      Task[]
+}
+
+model TaskGroup {
+  id       String  @id @default(cuid())
+  name     String
+  photo    String?
+  duration Int     @default(0)
+  state    Boolean @default(false)
+  userId   String
+  owner    User    @relation(fields: [userId], references: [id])
+
+  Task Task[]
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  startAt     DateTime @default(now())
+  endAt       DateTime
+  weight      Int?
+  state       State    @default(PENDENTE)
+
+  groupId       String
+  belongTogroup TaskGroup @relation(fields: [groupId], references: [id])
+
+  userId    String
+  taskOwner User   @relation(fields: [userId], references: [id])
+}
+
+enum State {
+  PENDENTE
+  PROGRESSO
+  FINALIZADO
+  CANCELADO
+}
